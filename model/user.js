@@ -1,4 +1,4 @@
-const dbConnPool = require("./db.js");
+const dbConnPool = require("./db");
 
 let Users = {};
 

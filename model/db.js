@@ -1,11 +1,16 @@
 const mariadb = require("mariadb");
+const config = require("../config");
 
-const pool = mariadb.createPool({
-  host: "192.168.1.15",
-  user: "ethan",
-  password: "w8Q1Ji8I23s2r4YIsocemabAb5nEQo",
-  database: "restaurant",
-  connectionLimit: 5,
-});
+let dbcPool = {
+  pool: null,
+};
 
-module.exports = pool;
+dbcPool.getConnection = async function () {
+  if (this.pool === null) {
+    this.pool = mariadb.createPool(config.db);
+  }
+
+  return await this.pool.getConnection();
+};
+
+module.exports = dbcPool;

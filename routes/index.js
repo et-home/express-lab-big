@@ -11,6 +11,7 @@ let loadPage = async function(pageKey, req, res, next, edit = false) {
             let menuItems = await menuModel.getItems();
             menuItems.name = "main";
             page.edit = edit;
+            page.login = req.login;
             res.render('index', { page: page, menu: menuItems });
             return;
         }
@@ -33,21 +34,22 @@ router.post('/page/:pageKey', async(req, res, next) => {
     let pageKey = req.params.pageKey.trim().toLowerCase();
 
     if (pageKey != '') {
+    
+        if (req.login.status) {
+            // require login for post function
+        
         if (req.body.function === "edit") {
              let oldpage = await pageModel.getPage(pageKey);
             if (oldpage.status) {
-                await pageModel.updatePage(pageKey, req.body);
+                await pageModel.updatePage(pageKey, req.body, req.login.user.userId);
             }
         }
         
-        // else if (req.body.function === "login") {
-        //     let page = await pageModel.getPage(pageKey);
-        //     res.render('index', { page: page, menu: menuItems });
-        // }
-        
+        }
         let menuItems = await menuModel.getItems();
         menuItems.name = "main";
         let page = await pageModel.getPage(pageKey);
+        page.login = req.login;
         res.render('index', { page: page, menu: menuItems });
         return;
 

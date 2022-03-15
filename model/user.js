@@ -7,7 +7,7 @@ let Users = {};
 Users.authWithCookies = async function (username, hash) {
   let dbConn = await dbConnPool.getConnection();
   const rows = await dbConn.query(
-    "SELECT  `userId`,  `username`,  `first`,  `cookiesHash`, `email` FROM `restaurant`.`user` WHERE `username`=?",
+    "SELECT  `userId`,  `username`,  `first`,  `cookieHash`, `email` FROM `restaurant`.`user` WHERE `username`=?",
     [username]
   );
   const result = {
@@ -56,9 +56,8 @@ Users.authWithPassword = async function (username, password) {
 
   let userInfo = rows[0];
   let passHash = sha256(password).toString();
-
-  console.log(passHash);
-
+  
+ 
   if (userInfo.passHash === passHash) {
     //password match, username exists
     userInfo.cookieHash = sha256(new Date().getTime + "" + userInfo.userId).toString();

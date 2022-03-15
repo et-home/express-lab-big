@@ -4,6 +4,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const hbs = require("hbs");
+const login = require("./middleware/login")
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -14,12 +15,13 @@ const app = express();
 hbs.registerPartials(path.join(__dirname, "views/partials"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
-
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(login);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

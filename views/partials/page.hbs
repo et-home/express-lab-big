@@ -1,0 +1,17 @@
+<p>{{{title}}}</p>
+<p>{{{content}}}</p>
+
+<div id="util_container">
+<a href="/page/{{pageKey}}/edit">Edit this page</a>
+</div>
+{{#if username}}
+<div id="edit_info">
+  Page
+  <span>{{pageKey}}</span>
+  last edited by<span>
+  <a href="mailto:{{email}}">
+  {{username}}</a></span>
+  at
+  {{dateModified}}
+</div>
+{{/if}}

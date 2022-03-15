@@ -16,7 +16,7 @@ Menu.getItems = async (name = "main") => {
   if (rows.length > 0) {
     result.status = true;
     result.data = rows;
-    console.log(result);
+    // console.log(result);
   } else {
     result.status = false;
   }

@@ -1,0 +1,16 @@
+
+
+<form method="post" action="/page/{{pageKey}}">
+<input type = "hidden" name="function" value="edit" />
+<input type="text" name="title" id="title" value="{{title}}" />
+<hr />
+
+<textarea name="content" id="content" cols="80">{{{content}}}</textarea>
+
+<hr />
+<input type="submit" />
+</form>
+
+<div id="edit_info">
+<span>{{pageKey}}</span> last edited by <span>{{username}}</span> at <span>{{dateModified}}</span>
+</div>

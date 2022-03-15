@@ -32,8 +32,8 @@ Users.authWithCookies = async function (username, hash) {
     result.message = 'invalid cookies';
   return result;
   
+  dbConn.end();
 }
-
 
 
 Users.authWithPassword = async function (username, password) {
@@ -51,6 +51,7 @@ Users.authWithPassword = async function (username, password) {
 
   if (rows[0] === undefined) {
     result.message = 'invalid user';
+    
     return result;
   }
 
@@ -73,12 +74,15 @@ Users.authWithPassword = async function (username, password) {
   result.message = 'invalid password';
   return result;
   // SELECT  `userId`,  `username`,  `first`,  `passHash`,  `cookieHash`, `email` FROM `restaurant`.`user` WHERE `username`='ethan'
+  dbConn.end();
+
 }
 
 Users.setCookieHash = async (username, hash) => {
   let dbConn = await dbConnPool.getConnection();
   const rows = await dbConn.query("UPDATE `restaurant`.`user` SET `cookieHash`=? WHERE `username`=?;",[hash, username]);
   // UPDATE `restaurant`.`user` SET `cookieHash`='03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' WHERE `username`='ethan';
+  dbConn.end();
 }
 
 

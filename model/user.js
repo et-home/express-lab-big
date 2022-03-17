@@ -1,8 +1,45 @@
 const dbConnPool = require("./db");
 const sha256 = require("crypto-js/sha256"); //usage： hash = sha256('Message‘)
+const async = require("hbs/lib/async");
 
 
 let Users = {};
+
+Users.addUser = async function (userData) {
+
+  const result = {
+    status: false, 
+    user: null,
+    message:"unable to create account"
+  }
+
+
+  if (userData !== undefined && userData.username !== undefined && userData.username.length>0 && userData.password !== undefined && userData.first !== undefined && userData.email !== undefined) {
+
+    let userResult = await this.getUserForUsername(userData.username);
+
+    if (userResult.status) {
+      result.message = `user ${userData.username} already exists`;
+    } else {
+      userData.passHash = sha256(userData.password).toString();
+      userData.username = userData.username.toLowerCase();
+      let dbConn = await dbConnPool.getConnection();
+      const queryResult = await dbConn.query("INSERT INTO `restaurant`.`user` (`username`, `first`, `passHash`, `email`) VALUES (?,?,?,?);",
+        [userData.username, userData.first, userData.passHash, userData.email]);
+      dbConn.end();
+
+      if (queryResult.affectedRows == 1) {
+        result.status = true;
+        result.user = userData;
+        result.message = `user ${queryResult.insertId}:${userData.username} added.`
+        result.user.userId = queryResult.insertId;
+      }
+    }
+  }
+
+  return result;
+}
+
 
 Users.authWithCookies = async function (username, hash) {
   let dbConn = await dbConnPool.getConnection();
@@ -122,5 +159,35 @@ Users.getUsers = async () => {
   result.data = rows;
   return result;
 };
+
+
+Users.getUserForUsername = async (username) => {
+  let result = {}; 
+  if (username === undefined) {
+    result.status = false;
+  } else {
+    username = username.toLowerCase();
+    let dbConn = await dbConnPool.getConnection();
+    const rows = await dbConn.query(
+      "SELECT userId, username, `first` FROM `user` WHERE username = ?",
+      [username]
+    );
+
+    dbConn.end();
+    //console.log(rows);
+    if (rows.length > 0) {
+      result.status = true;
+      result.rows = rows[0];
+      //console.log(rows[0]);
+    } else {
+      result.status = false;
+    }
+  }
+
+  return result;
+};
+
+
+
 
 module.exports = Users;

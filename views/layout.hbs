@@ -5,13 +5,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    {{> menu menu}}
-    {{> login page}}
-    {{#if page.edit}}
-      {{> page_edit page}}
-    {{ else}}
-      {{> page page}}
-    {{/if}}
+  {{> menu menu}}
     {{{body}}}
   </body>
 </html>

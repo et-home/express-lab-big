@@ -36,6 +36,23 @@ router.get('/page/:pageKey', async(req, res, next) => {
     loadPage(pageKey, req, res, next);
 });
 
+
+router.get('/page/new', async (req, res, next) => {
+    res.render('page_create', {login:req.login});
+});
+
+router.post('/page/new', async (req, res, next) => {
+    if(req.body.function === 'create' && req.login.status){
+        let addResult = await pageModel.createPage(req.body, req.login.user.userId);
+        if (!addResult.status) {
+            res.render('page_create', { login: req.login, message: addResult.message });
+        } else {
+            res.render('page_create', { login: req.login, message: "Page created" });
+        }
+    }
+    res.render('page_create', {login:req.login});
+});
+
 // data sent
 router.post('/page/:pageKey', async(req, res, next) => {
     let pageKey = req.params.pageKey.trim().toLowerCase();

@@ -1,7 +1,5 @@
 const dbConnPool = require("./db");
 const sha256 = require("crypto-js/sha256"); //usage： hash = sha256('Message‘)
-const async = require("hbs/lib/async");
-
 
 let Users = {};
 
@@ -47,6 +45,8 @@ Users.authWithCookies = async function (username, hash) {
     "SELECT  `userId`,  `username`,  `first`,  `cookieHash`, `email` FROM `restaurant`.`user` WHERE `username`=?",
     [username]
   );
+
+  dbConn.end();
   const result = {
     status: false, 
     user: null,
@@ -69,7 +69,6 @@ Users.authWithCookies = async function (username, hash) {
     result.message = 'invalid cookies';
   return result;
   
-  dbConn.end();
 }
 
 
@@ -79,7 +78,7 @@ Users.authWithPassword = async function (username, password) {
     "SELECT  `userId`,  `username`,  `first`,  `passHash`, `email` FROM `restaurant`.`user` WHERE `username`=?",
     [username]
   );
-
+  dbConn.end();
   const result = {
     status: false, 
     user: null,

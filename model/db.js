@@ -2,7 +2,7 @@ const mariadb = require("mariadb");
 const config = require("../config");
 
 let dbcPool = {
-  pool: null,
+  "pool": null,
 };
 
 dbcPool.getConnection = async function () {

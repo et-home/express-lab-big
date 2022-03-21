@@ -1,7 +1,10 @@
-  
+  <div id="main">
     {{> login page}}
     {{#if page.edit}}
       {{> page_edit page}}
     {{ else}}
+    <div id="content">
       {{> page page}}
+      </div>
     {{/if}}
+  </div>

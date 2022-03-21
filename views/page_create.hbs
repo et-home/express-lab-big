@@ -1,0 +1,22 @@
+
+{{#if message}}
+    <div class="message">{{message}}</div>
+{{/if}}
+
+{{#if login.status}}
+<form method="post" action="/page/new">
+<input type = "hidden" name="function" value="edit" />
+<label for="pageKey">Page Key</label> <input type="text" name="pageKey" id="pageKey" value="" />
+<br>
+<label for="title">Title</label><input type="text" name="title" id="title" value="" />
+<hr />
+<label for="content">Content</label>
+<textarea name="content" id="content" cols="80">{{{data.content}}}</textarea>
+
+<hr />
+<input type="submit" />
+</form>
+
+{{else}}
+<h3>you must be logged in to edit pages!</h3>
+{{/if}}

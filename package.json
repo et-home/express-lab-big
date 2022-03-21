@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "SET PORT=8030 & SET DEBUG=express-gen:* & nodemon start"
+    "dev": "SET PORT=8010 & SET DEBUG=express-gen:* & nodemon start"
   },
   "dependencies": {
     "body-parser": "^1.19.2",
